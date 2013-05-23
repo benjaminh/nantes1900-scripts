@@ -21,7 +21,7 @@
 		$.getJSON("coord.json", function(json) { // this will show the info it in firebug console
 			for (var row in json) {
 				// add a marker in the given location, attach some popup content to it and open the popup
-				L.marker([json[row].Latitude, json[row].Longitude]).addTo(map).bindPopup(json[row].Titre+"<br>"+json[row].Résumé);
+				L.marker([json[row].Latitude, json[row].Longitude]).addTo(map).bindPopup(json[row].Titre+"<br>"+json[row].Resume);
 			}
 		});
 	</script>
