@@ -10,7 +10,7 @@
  	<script src="jquery.js"></script>
 	<script>
 		// create a map in the "map" div, set the view to a given place and zoom
-		var map = L.map('map').setView([47.2026, -1.5498], 13);
+		var map = L.map('map').setView([47.2026, -1.57], 14);
 
 		// add an OpenStreetMap tile layer
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -19,11 +19,9 @@
 
 		//get json content
 		$.getJSON("coord.json", function(json) { // this will show the info it in firebug console
-			var obj = $.parseJSON(json);
-			for (var row in obj) {
+			for (var row in json) {
 				// add a marker in the given location, attach some popup content to it and open the popup
-				L.marker([row.Latitude, row.Longitude]).addTo(map)
-				    .bindPopup(row.Titre);
+				L.marker([json[row].Latitude, json[row].Longitude]).addTo(map).bindPopup(json[row].Titre+"<br>"+json[row].Résumé);
 			}
 		});
 	</script>
