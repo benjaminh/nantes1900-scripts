@@ -31,7 +31,7 @@ nvxfichiers = open("/home/bhervy/Temp/Donnees/Nvxfichiers", "a")
 #			for i in listefichiers:
 #				if (i.endswith(file)):
 #					fichiersource = i
-#					commandeshell=["wvHtml", fichiersource, newfile]
+#					commandeshell=["wvHtml", "--charset=utf-8", fichiersource, newfile]
 #					#commandeshell=["mv", "$(wvHtml "+fichiersource+" "+newfile+")", cible]
 #					subprocess.call(commandeshell)
 #					#Déplacement
@@ -39,16 +39,18 @@ nvxfichiers = open("/home/bhervy/Temp/Donnees/Nvxfichiers", "a")
 #					shutil.move(newfile,tgt)
 
 #Récupération des coordonnées dans un fichier csv
-#csvfile = open("/home/bhervy/Temp/Donnees/coord.csv", "a")
+csvfile = open("/home/bhervy/Temp/Donnees/coord.csv", "a")
+sortie = open("/home/bhervy/Temp/Donnees/Listefichiers", "a")
+#sortie.write("\n".join(glob.glob(cible+"/*.html")))
 for fichier in glob.glob(cible+"/*.html"):
-	texte=open(fichier,'r').read().replace(" ","").replace(" ","")
-	slatitude = re.search('(?<=Latitude:)[a-zA-Z0-9_.  ]+\d', texte)#regexp
-	slongitude = re.search('(?<=Longitude:)[a-zA-Z0-9_.  -]+', texte)
+	texte=unicode(open(fichier,'r').read(),"UTF-8").replace(" ","").replace(u"\u00A0","").replace("</u>","")
+	slatitude = re.search('(?<=Latitude:)[a-zA-Z0-9_.]+\d', texte, re.I)#regexp
+	slongitude = re.search('(?<=Longitude:)[a-zA-Z0-9_.-]+', texte, re.I)
 	if slatitude and slongitude:
 		lati = slatitude.group(0)
 		longi = slongitude.group(0)
-		print(lati+"\n"+longi+"\n")
-		#csvfile.write(fichier.lstrip(cible+"/").replace(",", "_")+","+lati+","+longi+"\n")
-#csvfile.close()
+		csvfile.write(lati+","+longi+"\n")
+		sortie.write(fichier+"\n")
+csvfile.close()
 
 
